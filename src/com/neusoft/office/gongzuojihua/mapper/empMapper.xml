@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间，作用就是对sql进行分类化管理 -->
+<mapper namespace="com.neusoft.office.gongzuojihua.mapper.empMapper">
+
+	<select id="all" parameterType="int" resultType="empvo">
+		<!-- select *
+		from user u
+		LEFT JOIN plan p
+		ON u.id = p.Subordinate
+		where flag = 0
+		 -->
+		SELECT *
+		FROM user u
+		LEFT JOIN plan p
+		ON u.id = p.Subordinate
+		WHERE p.flag = 0
+		AND u.id =#{id}
+
+	</select>
+
+	<select id="Start" parameterType="int" resultType="empvo">
+		SELECT *
+		FROM user u
+		LEFT JOIN plan p
+		ON u.id = p.Subordinate
+		WHERE p.flag = 1
+		AND u.id =#{id}
+	</select>
+
+	<insert id="inertplan" parameterType="Plan">
+		INSERT INTO
+		plan(starttime,endtime,plan,sponsor,subordinate,title,flag,Resources)
+		<trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+			<if test="starttime!=null">
+				#{starttime},
+			</if>
+			<if test="endtime!=null">
+				#{endtime},
+			</if>
+			<if test="plan!=null">
+				#{plan},
+			</if>
+			<if test="sponsor!=null">
+				#{sponsor},
+			</if>
+			<if test="subordinate!=null">
+				#{subordinate},
+			</if>
+			<if test="title!=null">
+				#{title},
+			</if>
+			<if test="flag==null">
+				0,
+			</if>
+			<if test="Resources!=null">
+				#{Resources}
+			</if>
+		</trim>
+
+	</insert>
+
+	<select id="selectplan" parameterType="int" resultType="empvo">
+
+		SELECT *
+		FROM user u
+		LEFT JOIN plan p
+		ON u.id = p.Subordinate
+		LEFT JOIN dept d
+		ON
+		u.dname = d.dname
+		WHERE id =#{id}
+		AND flag != 5
+	</select>
+
+	<select id="selectyear" parameterType="empvo" resultType="empvo">
+		select *
+		from user u
+		LEFT JOIN plan p
+		ON u.id = p.Subordinate
+		LEFT JOIN dept d
+		ON u.dname = d.dname
+		WHERE p.Subordinate=#{Subordinate}
+		<if test="starttime!=null">
+			AND p.starttime LIKE '%${starttime}%'
+		</if>
+		<if test="flag!=null">
+			AND p.flag=#{flag}
+		</if>
+		<if test="pingfen!=null">
+			AND p.pingfen=#{pingfen}
+		</if>
+
+	</select>
+	<!-- 全部工作-修改 -->
+	<update id="updateplan" parameterType="empvo">
+		UPDATE plan
+		<set>
+			<if test="pingfen != null">
+				pingfen=#{pingfen},
+			</if>
+			<if test="starttime != null">
+				starttime=#{starttime},
+			</if>
+			<if test="endtime != null">
+				endtime=#{endtime},
+			</if>
+			<if test="plan != null">
+				plan=#{plan},
+			</if>
+			<if test="plan != null">
+				sponsor=#{sponsor},
+			</if>
+			<if test="title!= null">
+				title=#{title}
+			</if>
+			WHERE only = #{only}
+		</set>
+	</update>
+
+	<!-- 全部工作-删除 -->
+	<delete id="deleteplan" parameterType="String">
+		DELETE FROM plan WHERE
+		only=#{only}
+	</delete>
+
+	<!-- 消息提醒-默认数据 -->
+	<select id="selectmsg" parameterType="int" resultType="epdvo">
+		SELECT
+		d.dname,e.name,p.title,p.sponsor,p.rank,p.starttime,p.endtime
+		FROM emp
+		e
+		LEFT JOIN dept d
+		USING(dno)
+		LEFT JOIN plan p
+		on e.id =
+		p.Subordinate
+		<!-- where e.id=#{id} -->
+		where p.fabu=1
+		and flag=0
+	</select>
+
+	<update id="curd" parameterType="Plan">
+		<!--开始 1 完成 2 归档5 提交3 -->
+		UPDATE plan SET
+		flag=#{flag}
+		WHERE
+		only = #{only}
+	</update>
+
+	<!-- 归档頁面查询 -->
+	<select id="SelectFile" parameterType="int" resultType="empvo">
+		SELECT *
+		FROM emp e
+		LEFT
+		JOIN plan p
+		ON e.id = p.Subordinate
+		LEFT JOIN dept d
+		USING(dno)
+		WHERE e.id=#{id}
+		AND flag =2
+	</select>
+
+	<!-- File 归档页面 -->
+	<select id="File" parameterType="int" resultType="empvo">
+		SELECT *
+		FROM
+		emp e
+		LEFT
+		JOIN plan p
+		ON e.id = p.Subordinate
+		LEFT JOIN dept d
+		USING(dno)
+		WHERE e.id=#{id}
+		AND flag =5
+	</select>
+	<!-- 流程查询 -->
+	<select id="process" parameterType="int" resultType="String">
+		select flag
+		FROM plan
+		WHERE only =#{only}
+	</select>
+
+	<!-- 查詢意見 -->
+	<select id="Reject" parameterType="int" resultType="String">
+		SELECT n.idea
+		FROM plan p
+		LEFT JOIN node n
+		ON p.only = n.tot
+		WHERE only =#{only}
+	</select>
+
+	<select id="carall" resultType="String">
+		SELECT carname
+		FROM car
+	</select>
+
+</mapper>

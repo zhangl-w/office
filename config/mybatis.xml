@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<typeAliases>
+        <package name="com.neusoft.office.gongzuojihua.po"/>
+</typeAliases>
+	<mappers>
+       <mapper resource="com/neusoft/office/gongzuojihua/mapper/UserMapper.xml"/>
+       <mapper resource="com/neusoft/office/gongzuojihua/mapper/empMapper.xml"/>
+       <mapper resource="com/neusoft/office/login/mapper/LoginMapper.xml"/>
+       <mapper resource="com/neusoft/office/select/mapper/SelectMapper.xml"/>
+    	 <mapper resource="com/neusoft/office/managersys/mapper/MsMapper.xml"/>
+    	 <mapper resource="com/neusoft/office/yongcheshenqing/mapper/CarMapper.xml"/>
+    	 <mapper resource="com/neusoft/office/yongcheshenqing/mapper/CarrequestMapper.xml"/>
+    	 <mapper resource="com/neusoft/office/yongcheshenqing/mapper/IdeaMapper.xml"/>
+    	 <mapper resource="com/neusoft/office/kq/mapper/QjMapper.xml"/>
+	</mappers>
+</configuration>

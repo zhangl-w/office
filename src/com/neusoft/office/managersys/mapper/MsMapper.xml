@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.office.managersys.mapper.MsMapper">
+<select id="getuc" resultType="com.neusoft.office.managersys.po.uc">
+	SELECT * FROM `character`
+</select>
+<select id="getDeptlist" parameterType="java.lang.String" resultType="com.neusoft.office.managersys.po.msuser">
+	SELECT * FROM USER WHERE DEPT=#{dept}
+</select>
+<select id="getuser" resultType="com.neusoft.office.managersys.po.msuser">
+	SELECT * FROM USER JOIN DEPT USING (DNAME)
+</select>
+<select id="update" parameterType="com.neusoft.office.managersys.po.Dept">
+	UPDATE DEPT SET DNAME=#{dname} WHERE DNO=#{dno}
+</select>
+<select id="userupdate" parameterType="com.neusoft.office.managersys.po.msuser">
+	UPDATE USER SET TRUENAME=#{truename},USERNAME=#{username},PASSWORD=#{password},USERCHAR=#{userchar},DNAME=#{dname} WHERE ID=#{id}
+</select>
+<select id="del" parameterType="com.neusoft.office.managersys.po.Dept">
+ 	UPDATE DEPT SET DNAME="无" WHERE DNO=#{dno}
+</select>
+<select id="userdel" parameterType="java.lang.Integer">
+ 	UPDATE USER SET TRUENAME=NULL,USERNAME=NULL,PASSWORD=NULL,DNO=NULL,USERCHAR=NULL WHERE ID=#{uid}
+</select>
+<select id="getpower" resultType="com.neusoft.office.managersys.po.power">
+	SELECT * FROM power
+</select>
+<select id="getempower" parameterType="java.lang.Integer" resultType="java.lang.String">
+	SELECT EMPOWER FROM MSEMPOWER WHERE CHARID=#{cid}
+</select>
+<select id="updateempower">
+	UPDATE MSEMPOWER SET EMPOWER=#{str1} WHERE CHARID=#{cid}
+</select>
+<select id="uduser" parameterType="com.neusoft.office.managersys.po.msuser">
+	UPDATE USER SET USERNAME=#{username},PASSWORD=#{password} WHERE ID=#{id}
+</select>
+<select id="getc" parameterType="java.lang.Integer" resultType="java.lang.String">
+	SELECT USERCHAR FROM `character` WHERE CHARID=#{cid}
+</select>
+<select id="getid" parameterType="java.lang.String" resultType="com.neusoft.office.managersys.po.uc">
+	SELECT * FROM `character` WHERE USERCHAR=#{cid}
+</select>
+<select id="getDept" resultType="com.neusoft.office.managersys.po.Dept">
+	SELECT * FROM DEPT
+</select>
+<select id="getmenu" resultType="com.neusoft.office.managersys.po.Menu">
+	SELECT * FROM MENU
+</select>
+</mapper>

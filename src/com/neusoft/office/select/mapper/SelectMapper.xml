@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间，作用就是对sql进行分类化管理-->
+<mapper namespace="com.neusoft.office.select.mapper.SelectMapper">
+	<select id="all" resultType="string">
+		select count(*) from user
+	</select>
+	<select id="select" parameterType="com.neusoft.office.select.po.Bangong" resultType="string">													 
+		select count(*) from plan 
+		<where>
+			<if test="kaishishijian != null">
+				starttime like '%${kaishishijian}%'
+			</if>
+			<if test="keshi != null">
+				and keshi = #{keshi}
+			</if>
+		</where>
+	</select>
+	<select id="end" parameterType="com.neusoft.office.select.po.Bangong" resultType="String">
+		select count(*) from plan
+		<where>
+			<if test="jieshushijian != null">
+				#{jieshushijian} >= endtime
+			</if>
+			<if test="kaishishijian != null">
+				and starttime like '%${kaishishijian}%'
+			</if>
+			<if test="keshi != null">
+				and keshi = #{keshi}
+			</if>
+		</where>
+	</select>
+	<select id="person" parameterType="com.neusoft.office.select.po.Bangong" resultType="String">
+		SELECT COUNT(distinct user.username) from user left JOIN plan on plan.keshi = user.dname WHERE plan.keshi = #{keshi}
+	</select>
+	<select id="star" parameterType="com.neusoft.office.select.po.Bangong" resultType="String">
+		select COUNT(*) from pingjia LEFT JOIN plan on plan.only = pingjia.planid where keshi = #{keshi} and xingji = #{xingji} and #{jieshushijian} >= endtime and starttime like '%${kaishishijian}%'
+	</select>
+	
+	<select id="chuqin" parameterType="com.neusoft.office.select.po.Qingjia" resultType="string">
+		<!-- select count(*) from chuqinbiao where leixing BETWEEN 1 and 5 and chuqinshijian like '%${chuqinshijian}%' -->
+		select count(*) from kaoqin where  kaishi = #{kaishi} and leixing in ('事假','病假','年假') and zhuangtai in (0,3)
+	</select>
+	<select id="juzhang" resultType="string">
+		select count(*) from user where dname = "局长室"
+	</select>
+	<select id="shijia" parameterType="String" resultType="string">
+		select count(*) from kaoqin where leixing = '事假' and #{a} between kaishi and jieshu and zhuangtai in (0,3)
+	</select>
+	<select id="bingjia" parameterType="String" resultType="string">
+		select count(*) from kaoqin where leixing = '病假' and #{a} between kaishi and jieshu and zhuangtai in (0,3)
+	</select>
+	<select id="qitajia" parameterType="String" resultType="string">
+		select count(*) from kaoqin where leixing in ('早退','迟到') and #{a} between kaishi and jieshu
+	</select>
+	<select id="shijiaperson" parameterType="String" resultType="com.neusoft.office.select.po.Qingjia">
+		select * from kaoqin where leixing = '事假' and #{kaishi} between kaishi and jieshu and zhuangtai in (0,3)
+	</select>
+	<select id="bingjiaperson" parameterType="String" resultType="com.neusoft.office.select.po.Qingjia">
+		select * from kaoqin where leixing = '病假' and #{kaishi} between kaishi and jieshu and zhuangtai in (0,3)
+	</select>
+	<select id="qitajiaperson" parameterType="String" resultType="com.neusoft.office.select.po.Qingjia">
+		select * from kaoqin where leixing in ('早退','迟到') and #{kaishi} between kaishi and jieshu
+	</select>
+	<select id="z" parameterType="com.neusoft.office.select.po.Bangong" resultType="com.neusoft.office.select.po.Pingjia">
+		select * from pingjia LEFT JOIN plan on plan.only=pingjia.planid where keshi = #{keshi} and #{jieshushijian} >= endtime and starttime like '%${kaishishijian}%'
+		
+	</select>
+	<select id="chuchai" parameterType="com.neusoft.office.select.po.Qingjia" resultType="string">
+		select count(*) from kaoqin  <!-- where kaishishijian like concat('%',#{kaishishijian},'%') and qingjialeixing = #{qingjialeixing}  -->
+		<where>
+			zhuangtai in (0,3)
+			<if test="kaishi != null">
+				and kaishi like '%${kaishi}%'
+			</if>
+			<if test="leixing != null">
+				and leixing = #{leixing} 
+			</if>
+			<if test="bumen != null">
+				and bumen =  #{bumen}
+			</if>
+		</where>
+	</select>
+	<select id="chuchaiday" parameterType="com.neusoft.office.select.po.Qingjia" resultType="com.neusoft.office.select.po.Qingjia">
+		select * from kaoqin where kaishi like concat('%',#{kaishi},'%') and leixing = #{leixing} and zhuangtai in (0,3)
+	</select>
+</mapper>
+<!-- xx like concat('%',#{xx},'%') 模糊查询-->

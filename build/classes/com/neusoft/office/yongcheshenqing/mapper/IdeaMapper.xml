@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间，作用就是对sql进行分类化管理-->
+<mapper namespace="com.neusoft.office.yongcheshenqing.mapper.IdeaMapper">
+	<insert id="addIdea" parameterType="com.neusoft.office.yongcheshenqing.po.Idea">
+		insert into idea(idea,requestid,approver,shenpishijian)
+		values (#{idea},#{requestid},#{approver},#{shenpishijian})		
+	</insert>
+	<select id="findById" parameterType="int" resultType="com.neusoft.office.yongcheshenqing.po.Idea">
+		select *
+		FROM idea 
+		where requestid = #{value}
+	</select>
+</mapper>

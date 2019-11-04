@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间，作用就是对sql进行分类化管理-->
+<mapper namespace="com.neusoft.office.yongcheshenqing.mapper.CarrequestMapper">
+	<!-- <select id="findTime" resultType="map">
+		SELECT MAX(shiyongshijian) max,MIN(shiyongshijian) min FROM carusage
+	</select> -->
+	<select id="findInfo" resultType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		select shenqingkeshi,shenqingren,shenqingcheshuliang,chufashijian,shiyongtianshu FROM carrequest where shenqingjieguo = 2 or shenqingjieguo = 5
+	</select>
+	<select id="findAll" resultType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		select *
+		FROM carrequest 
+		LEFT JOIN car 
+		on carrequest.carid = car.carid		
+	</select>
+	<insert id="carrequestadd" parameterType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		insert into carrequest(shenqingkeshi,shenqingren,qingqiushijian,carid,shenqingcheshuliang,qingqiuliyou,chufashijian,jieshushijian,shiyongtianshu,shenqingjieguo,shifouguidang)
+		values (#{shenqingkeshi},'aa',#{qingqiushijian},#{carid},#{shenqingcheshuliang},#{qingqiuliyou},#{chufashijian},#{jieshushijian},#{shiyongtianshu},0,'否')		
+	</insert>
+	<select id="findMy" resultType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		select *
+		FROM carrequest 
+		LEFT JOIN car 
+		on carrequest.carid = car.carid	
+		where shenqingjieguo != 7
+		<!-- where shenqingren = 'aa'	 -->
+	</select>
+	<select id="findById" parameterType="int" resultType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		select *
+		FROM carrequest 
+		LEFT JOIN car 
+		on carrequest.carid = car.carid	
+		where id = #{value}
+	</select>
+	<update id="up" parameterType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		update carrequest set shenqingkeshi=#{shenqingkeshi},qingqiushijian=#{qingqiushijian},carid=#{carid},shenqingcheshuliang=#{shenqingcheshuliang},qingqiuliyou=#{qingqiuliyou},chufashijian=#{chufashijian},jieshushijian=#{jieshushijian},shiyongtianshu=#{shiyongtianshu},shenqingjieguo='0'
+		 where id = #{id}
+	</update>
+	<delete id="del" parameterType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		delete from carrequest where id = #{id}
+	</delete>
+	<select id="findshenhe1" resultType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		select *
+		FROM carrequest 
+		LEFT JOIN car 
+		on carrequest.carid = car.carid	
+		where shenqingjieguo = 0	
+	</select>
+	<update id="shenheup1" parameterType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		update carrequest set shifoushangbao=#{shifoushangbao},shenqingjieguo=#{shenqingjieguo}
+		where id = #{id}
+	</update>
+	<select id="findshenhe2" resultType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		select *
+		FROM carrequest 
+		LEFT JOIN car 
+		on carrequest.carid = car.carid	
+		where shenqingjieguo = 3	
+	</select>
+	<update id="shenheup2" parameterType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		update carrequest set shenheyijian=#{shenheyijian},shenqingjieguo=#{shenqingjieguo}
+		where id = #{id}
+	</update>
+	<update id="guidang" parameterType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		update carrequest set shifouguidang=#{shifouguidang},shenqingjieguo=7
+		where id = #{id}
+	</update>
+	<select id="findguidang" resultType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		select *
+		FROM carrequest 
+		LEFT JOIN car 
+		on carrequest.carid = car.carid	
+		where shenqingjieguo = 7
+		<!-- where shenqingren = 'aa'	 -->
+	</select>
+	<update id="wancheng" parameterType="com.neusoft.office.yongcheshenqing.po.Carrequest">
+		update carrequest set shenqingjieguo=#{shenqingjieguo}
+		where id = #{id}
+	</update>
+	<select id="deptlist" resultType="com.neusoft.office.yongcheshenqing.po.ALL">
+		select dname
+		FROM dept 
+		LEFT JOIN carrequest
+		on carrequest.shenqingkeshi = dept.dname	
+		
+	</select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间，作用就是对sql进行分类化管理-->
+<mapper namespace="com.neusoft.office.gongzuojihua.mapper.UserMapper">
+	
+	<select id="selectEmp" resultType="emp" >
+		select * from user
+	</select>
+	<select id="getDept" resultType="dept" >
+		select * from dept
+	</select>
+	<select id="getPlan" resultType="plan" >
+		select * from plan
+	</select>
+	<select id="getAll" resultType="All">
+		select * from plan p LEFT JOIN user e on e.id = p.Subordinate LEFT JOIN dept d using (dno) where flag = 3 or flag = 6 or flag = 2 or flag = 5   
+	</select>
+	<select id="runWork" resultType="All">
+		select * from plan p LEFT JOIN user e on e.id = p.Subordinate LEFT JOIN dept d using (dno) where flag = 1
+	</select>
+	<select id="endWork" resultType="All">
+		select * from plan p LEFT JOIN user e on e.id = p.Subordinate LEFT JOIN dept d using (dno) where flag = 2
+	</select>
+	<select id="waitWork" resultType="All">
+		select * from plan p LEFT JOIN user e on e.id = p.Subordinate LEFT JOIN dept d using (dno) where flag = 3
+	</select>
+	<update id="fabu" parameterType="int" >
+		UPDATE plan SET fabu = 1 WHERE only = #{s}
+	</update>
+	<update id="shenhe" parameterType="All">
+	</update>
+	<update id="shangbao" parameterType="All">
+		UPDATE plan SET flag = #{flag},shangbao = #{shangbao} WHERE only = #{only}
+	</update>
+	<update id="shenhea" parameterType="All">
+		UPDATE plan SET flag = #{flag},shangbao = 'false',number = number+1 WHERE only = #{only}
+	</update>
+	<select id="selectFB" resultType="All">
+		select * from plan p LEFT JOIN user e on e.id = p.Subordinate LEFT JOIN dept d using (dno) where fabu!=1
+	</select>
+	 <insert id="addIdea" parameterType="All">
+		insert into node(tot,idea,cishu,time) select #{only},#{idea},number,#{time} from plan where only=#{only}
+	</insert> 
+	<update id="jshenhe" parameterType="All">
+		UPDATE plan SET flag = #{flag},number = number+1,shangbao='a' WHERE only = #{only}
+	</update>
+	<select id="jwaitWork" resultType="All">
+		select * from plan p LEFT JOIN user e on e.id = p.Subordinate LEFT JOIN dept d using (dno) where shangbao = 'true'
+	</select>
+</mapper>

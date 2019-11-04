@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace命名空间，作用就是对sql进行分类化管理-->
+<mapper namespace="com.neusoft.office.yongcheshenqing.mapper.CarMapper">
+	
+	<select id="findcarlist" resultType="com.neusoft.office.yongcheshenqing.po.Car">
+		select carid,carname,surplus FROM car
+	</select>
+	<update id="surplusUp" parameterType="com.neusoft.office.yongcheshenqing.po.Car">
+		update car set surplus=#{surplus}
+		where carid = #{carid}
+	</update>
+	<select id="findById" resultType="com.neusoft.office.yongcheshenqing.po.Car" parameterType="int">
+		select surplus FROM car
+		where carid = #{carid}
+	</select>
+</mapper>
